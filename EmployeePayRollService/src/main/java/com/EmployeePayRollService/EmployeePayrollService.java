@@ -3,8 +3,10 @@ package com.EmployeePayRollService;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 
 public class  EmployeePayrollService{
 	
@@ -14,13 +16,14 @@ public class  EmployeePayrollService{
 		String sql = "SELECT * FROM payroll_service.employee_payroll";
 		Statement query = conn.createStatement();
 		ResultSet resultSet = query.executeQuery(sql);
-		
+		ResultSetMetaData rsmd = resultSet.getMetaData();
+	    int columnsNumber = rsmd.getColumnCount();
 		while(resultSet.next()) {
-			int id = resultSet.getInt("id");
-			String name = resultSet.getString("name");
-			String phoneNo = resultSet.getString("phone_number");
-			String gender = resultSet.getString("gender");
-			System.out.println(id+" "+name+" "+phoneNo+" "+gender);
+			for (int i = 1; i <= columnsNumber; i++) {
+	            if (i > 1) System.out.print(" | ");
+	            System.out.print(resultSet.getString(i));
+	        }
+	        System.out.println("");
 			
 		}
 		conn.close();
